@@ -1,0 +1,49 @@
+def print_board(board):
+    print(f"{board[0]} | {board[1]} | {board[2]}")
+    print("--+---+--")
+    print(f"{board[3]} | {board[4]} | {board[5]}")
+    print("--+---+--")
+    print(f"{board[6]} | {board[7]} | {board[8]}\n")
+
+def check_win(board, mark):
+    wins = [
+        [0,1,2], [3,4,5], [6,7,8],    # rows
+        [0,3,6], [1,4,7], [2,5,8],    # columns
+        [0,4,8], [2,4,6]              # diagonals
+    ]
+    return any(all(board[i] == mark for i in win) for win in wins)
+
+def tic_tac_toe():
+    board = [' ']*9
+    turn = 'X'
+    moves = 0
+    
+    while moves < 9:
+        print_board(board)
+        
+        try:
+            pos = int(input(f"Player {turn}, enter position (1-9): ")) - 1
+            if pos not in range(9):
+                print("Invalid input. Enter a number between 1 and 9.")
+                continue
+            if board[pos] != ' ':
+                print("Position already taken. Try again.")
+                continue
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+            continue
+        
+        board[pos] = turn
+        moves += 1
+        
+        if check_win(board, turn):
+            print_board(board)
+            print(f"Player {turn} wins!")
+            return
+        
+        turn = 'O' if turn == 'X' else 'X'
+    
+    print_board(board)
+    print("It's a draw!")
+
+tic_tac_toe()
